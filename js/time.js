@@ -6,6 +6,9 @@ export class Span {
     valueOf() { return this.ms; }
     toString() { return this.valueOf().toString(); }
 
+    add(ms) { this.ms += ms; }
+    subtract(ms) { this.ms = Math.max(0, this.ms - ms); }
+
     milliseconds() { return this.ms; }
     seconds() { return this.ms / 1000; }
     minutes() { return this.seconds() / 60; }
@@ -13,11 +16,16 @@ export class Span {
     days() { return this.hours() / 24; }
     weeks() { return this.days() / 7; }
 
-    realTime(realRate) { // game ms per real ms
-        return new Span(this.ms / realRate);
+    realTime(gameRate) {
+        return new Span(this.ms / gameRate);
+    }
+
+    gameTime(gameRate) {
+        return new Span(this.ms * gameRate);
     }
 }
 
+export const MILLISECOND = new Span(1);
 export const SECOND = new Span(1000);
 export const MINUTE = new Span(SECOND * 60);
 export const HOUR = new Span(MINUTE * 60);
@@ -27,9 +35,9 @@ export const MYRON = new Span(HOUR * 10000);
 export const HEMYRON = new Span(MYRON / 2);
 
 export class Rate {
-    constructor(ms, n=1) {
-        this.ms = ms;
+    constructor(n, ms) {
         this.n = n;
+        this.ms = ms;
     }
 
     valueOf() { return this.perMillisecond(); }
@@ -44,6 +52,6 @@ export class Rate {
     perWeek() { return this.perDay() * 7; }
 }
 
-export const ONE_PER_SECOND = new Rate(SECOND);
-export const THIRTY_PER_SECOND = new Rate(SECOND, 30);
-export const SIXTY_PER_SECOND = new Rate(SECOND, 60);
+export const ONE_PER_SECOND = new Rate(1, SECOND);
+export const THIRTY_PER_SECOND = new Rate(30, SECOND);
+export const SIXTY_PER_SECOND = new Rate(60, SECOND);
