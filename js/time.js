@@ -14,7 +14,7 @@ export class Span {
     weeks() { return this.days() / 7; }
 
     realTime(realRate) { // game ms per real ms
-        return new Span(this.ms / realRate.interval());
+        return new Span(this.ms / realRate);
     }
 }
 
