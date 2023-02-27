@@ -18,7 +18,7 @@ export class Game {
         };
         this.render = () => {
             if (this.div)
-                this.div.innerHTML = this.realSpan.seconds + "<br>" + this.gameSpan.seconds;
+                this.div.innerHTML = this.realSpan.inSeconds() + "<br>" + this.gameSpan.inSeconds();
         };
         this.loop = new LatencyCompensatedGameLoop(this.simulate, this.render);
     }

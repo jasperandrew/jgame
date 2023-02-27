@@ -6,5 +6,5 @@ game.run();
 window.JGame = game;
 window.Time = Time;
 let t = new Time.Span(Time.HOUR, 2);
-console.log(t.hours);
+console.log(t.inHours());
 //# sourceMappingURL=main.js.map

@@ -27,6 +27,6 @@ export class Game {
     }
 
     render = () => {
-        if (this.div) this.div.innerHTML = this.realSpan.seconds + "<br>" + this.gameSpan.seconds;
+        if (this.div) this.div.innerHTML = this.realSpan.inSeconds() + "<br>" + this.gameSpan.inSeconds();
     }
 }

@@ -9,4 +9,4 @@ game.run();
 (window as any).Time = Time;
 
 let t = new Time.Span(Time.HOUR, 2);
-console.log(t.hours);
+console.log(t.inHours());

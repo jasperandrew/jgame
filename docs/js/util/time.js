@@ -1,22 +1,22 @@
 export class Span {
     constructor(milliseconds, multiplier = 1) {
-        if (typeof milliseconds === "object") {
-            this.ms = milliseconds.ms * multiplier;
+        if (typeof milliseconds === "number") {
+            this.ms = milliseconds * multiplier;
         }
         else {
-            this.ms = milliseconds * multiplier;
+            this.ms = milliseconds.ms * multiplier;
         }
         if (this.ms < 0)
             throw "TimeError: the concept of negative time has not been implemented for this application.";
     }
+    inSeconds() { return this.ms / 1000; }
+    inMinutes() { return this.inSeconds() / 60; }
+    inHours() { return this.inMinutes() / 60; }
+    inDays() { return this.inHours() / 24; }
+    inWeeks() { return this.inDays() / 7; }
     add(span) { this.ms += span.ms; }
     subtract(span) { this.ms = Math.max(0, this.ms - span.ms); }
-    get seconds() { return this.ms / 1000; }
-    get minutes() { return this.seconds / 60; }
-    get hours() { return this.minutes / 60; }
-    get days() { return this.hours / 24; }
-    get weeks() { return this.days / 7; }
-    scaleTime(rate) { return new Span(this.ms * rate.perMs); }
+    scaleTime(rate) { return new Span(this.ms * rate.perMs()); }
 }
 export const MILLISECOND = new Span(1);
 export const SECOND = new Span(1000);
@@ -31,14 +31,14 @@ export class Rate {
         this.n = n;
         this.span = span;
     }
+    perMs() { return this.n / this.span.ms; }
+    perSecond() { return this.perMs() * 1000; }
+    perMinute() { return this.perSecond() * 60; }
+    perHour() { return this.perMinute() * 60; }
+    perDay() { return this.perHour() * 24; }
+    perWeek() { return this.perDay() * 7; }
     inverse() { return new Rate(this.span.ms, new Span(this.n)); }
     interval() { return new Span(this.span.ms / this.n); }
-    get perMs() { return this.n / this.span.ms; }
-    get perSecond() { return this.perMs * 1000; }
-    get perMinute() { return this.perSecond * 60; }
-    get perHour() { return this.perMinute * 60; }
-    get perDay() { return this.perHour * 24; }
-    get perWeek() { return this.perDay * 7; }
 }
 export const ONE_PER_SECOND = new Rate(1, SECOND);
 export const THIRTY_PER_SECOND = new Rate(30, SECOND);
