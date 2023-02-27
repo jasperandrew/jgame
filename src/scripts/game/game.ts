@@ -1,29 +1,32 @@
 import * as Time from "../util/time.js"
-import * as Dom from "../util/dom.js";
+import { q } from "../util/dom.js";
 import { LatencyCompensatedGameLoop } from "./loop.js";
 
 export class Game {
-    frameRate: Time.Rate = Time.SIXTY_PER_SECOND;
-    gameRate: Time.Rate = new Time.Rate(Time.MINUTE.milliseconds(), Time.MILLISECOND); // one game min per real ms
+
+    gameRate: Time.Rate = new Time.Rate(Time.MINUTE.ms, Time.MILLISECOND); // one game min per real ms
     loop: LatencyCompensatedGameLoop;
 
-    div = Dom.q('div');
-    gameSpan = Time.DAY;
+    div = q('div');
+    gameSpan = Time.WEEK;
     realSpan = this.gameSpan.scaleTime(this.gameRate.inverse());
     t = new Time.Span(0);
 
     constructor() {
-        this.loop = new LatencyCompensatedGameLoop(this.frameRate, this.simulate, this.render);
+        this.loop = new LatencyCompensatedGameLoop(this.simulate, this.render);
+    }
+
+    run = () => {
         this.loop.start();
     }
 
-    private simulate = () => {
-        this.t.add(this.frameRate.interval());
-        this.gameSpan.subtract(this.frameRate.interval().scaleTime(this.gameRate));
-        this.realSpan.subtract(this.frameRate.interval());
+    simulate = () => {
+        this.t.add(this.loop.rate.interval());
+        this.gameSpan.subtract(this.loop.rate.interval().scaleTime(this.gameRate));
+        this.realSpan.subtract(this.loop.rate.interval());
     }
 
-    private render = () => {
-        if (this.div) this.div.innerHTML = this.realSpan.seconds() + "<br>" + this.gameSpan.seconds();
+    render = () => {
+        if (this.div) this.div.innerHTML = this.realSpan.seconds + "<br>" + this.gameSpan.seconds;
     }
-};
+}
