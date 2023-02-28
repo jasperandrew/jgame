@@ -1,6 +1,8 @@
-import { THIRTY_PER_SECOND } from "../util/time.js";
+import { Time } from "../util/physics/unit.js";
+var MS = Time.MS;
+import { THIRTY_HERTZ } from "../util/physics/constants.js";
 export class LatencyCompensatedGameLoop {
-    constructor(logicFn, renderFn, rate = THIRTY_PER_SECOND) {
+    constructor(logicFn, renderFn, rate = THIRTY_HERTZ) {
         this.prevTime = 0;
         this.latencyDelay = 0;
         this.stopped = true;
@@ -10,18 +12,18 @@ export class LatencyCompensatedGameLoop {
             this.prevTime = now;
             while (this.latencyDelay > 0) {
                 this.logicFn();
-                this.latencyDelay -= this.rate.interval().ms;
+                this.latencyDelay -= this.rate.interval().in(MS);
             }
             this.renderFn();
             if (!this.stopped)
-                window.setTimeout(this.loop, this.rate.interval().ms);
+                window.setTimeout(this.loop, this.rate.interval().in(MS));
         };
         this.start = () => {
             if (!this.stopped)
                 return console.info('Game loop is already running.');
             this.stopped = false;
             this.prevTime = Date.now();
-            this.latencyDelay = this.rate.interval().ms;
+            this.latencyDelay = this.rate.interval().in(MS);
             this.loop();
         };
         this.stop = () => {

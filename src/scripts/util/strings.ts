@@ -1,0 +1,1 @@
+export const removeNonLanguageCharacters = (str: string) => str.replace(/[^\p{L}]/gu, '');

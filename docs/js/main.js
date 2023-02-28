@@ -1,10 +1,14 @@
 import { Game } from "./game/game.js";
-import * as Time from "./util/time.js";
+import * as Measurable from "./util/physics/measurable.js";
+import * as Constant from "./util/physics/constants.js";
+import { Time } from "./util/physics/unit.js";
 let game = new Game();
 // game.loop.rate = new Time.Rate(2, Time.SECOND);
 game.run();
-window.JGame = game;
-window.Time = Time;
-let t = new Time.Span(Time.HOUR, 2);
-console.log(t.inHours());
+// (window as any).JGame = game;
+window.M = Measurable;
+window.C = Constant;
+window.T = Time;
+// let t = new Measurable.Timespan(Constant.HOUR, 2);
+// console.log(t.inHours());
 //# sourceMappingURL=main.js.map
