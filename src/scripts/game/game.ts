@@ -29,6 +29,6 @@ export class Game {
     }
 
     render = () => {
-        if (this.div) this.div.innerHTML = this.t.in(Time.S) + "<br>" + this.realSpan.in(Time.S) + "<br>" + this.gameSpan.in(Time.S);
+        if (this.div) this.div.innerHTML = this.t.in(Time.S) + '<br>' + this.realSpan.in(Time.S) + '<br>' + this.gameSpan.in(Time.S);
     }
 }

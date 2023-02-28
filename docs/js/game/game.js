@@ -20,7 +20,7 @@ export class Game {
         };
         this.render = () => {
             if (this.div)
-                this.div.innerHTML = this.t.in(Time.S) + "<br>" + this.realSpan.in(Time.S) + "<br>" + this.gameSpan.in(Time.S);
+                this.div.innerHTML = this.t.in(Time.S) + '<br>' + this.realSpan.in(Time.S) + '<br>' + this.gameSpan.in(Time.S);
         };
         this.loop = new LatencyCompensatedGameLoop(this.simulate, this.render);
     }
