@@ -1,15 +1,16 @@
-export {};
+import { Quantity, Rate } from "./measurable.js";
+import * as Time from "./unit/definitions/time.js";
 // /* Timespans */
-// export const MILLISECOND = new Measurable.Quantity(1);
-// export const SECOND = new Measurable.Quantity();
-// export const MINUTE = new Measurable.Timespan(SECOND, 60);
-// export const HOUR = new Measurable.Timespan(MINUTE, 60);
-// export const DAY = new Measurable.Timespan(HOUR, 24);
-// export const WEEK = new Measurable.Timespan(DAY, 7);
-// export const MYRON = new Measurable.Timespan(HOUR, 10000);
-// export const HEMYRON = new Measurable.Timespan(MYRON, 0.5);
+export const ONE_MILLISECOND = new Quantity(1, Time.MS);
+export const ONE_SECOND = new Quantity(1, Time.S);
+export const ONE_MINUTE = new Quantity(1, Time.MIN);
+export const ONE_HOUR = new Quantity(1, Time.H);
+export const ONE_DAY = new Quantity(1, Time.D);
+export const ONE_WEEK = new Quantity(1, Time.W);
+export const ONE_MYRON = new Quantity(10000, Time.H);
+export const ONE_HEMYRON = new Quantity(ONE_MYRON.n / 2);
 // /* Rates */
-// export const ONE_PER_SECOND = new Measurable.Rate(1, SECOND);
-// export const THIRTY_HERTZ = new Measurable.Rate('none', 'time', 30);
-// export const SIXTY_PER_SECOND = new Measurable.Rate(60, SECOND);
+export const ONE_HERTZ = new Rate(1, Time.HZ);
+export const THIRTY_HERTZ = new Rate(30, Time.HZ);
+export const SIXTY_HERTZ = new Rate(60, Time.HZ);
 //# sourceMappingURL=constants.js.map
