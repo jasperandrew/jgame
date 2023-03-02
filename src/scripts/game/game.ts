@@ -1,6 +1,6 @@
 import { q } from "../util/dom.js";
 import { Quantity, Rate } from "../util/physics/measurable.js";
-import { Time } from "../util/physics/unit.js";
+import { Time } from "../util/physics/unit/unit.js";
 import { LatencyCompensatedGameLoop } from "./loop.js";
 
 export class Game {

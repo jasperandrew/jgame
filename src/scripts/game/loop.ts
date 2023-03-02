@@ -1,5 +1,5 @@
 import { Rate } from "../util/physics/measurable.js";
-import { Time } from "../util/physics/unit.js"; import MS = Time.MS;
+import { Time } from "../util/physics/unit/unit.js"; import MS = Time.MS;
 import { THIRTY_HERTZ } from "../util/physics/constants.js";
 
 export class LatencyCompensatedGameLoop {

@@ -1,4 +1,4 @@
-import * as Measurable from "./measurable.js";
+export {};
 // /* Timespans */
 // export const MILLISECOND = new Measurable.Quantity(1);
 // export const SECOND = new Measurable.Quantity();
@@ -10,6 +10,6 @@ import * as Measurable from "./measurable.js";
 // export const HEMYRON = new Measurable.Timespan(MYRON, 0.5);
 // /* Rates */
 // export const ONE_PER_SECOND = new Measurable.Rate(1, SECOND);
-export const THIRTY_HERTZ = new Measurable.Rate('none', 'time', 30);
+// export const THIRTY_HERTZ = new Measurable.Rate('none', 'time', 30);
 // export const SIXTY_PER_SECOND = new Measurable.Rate(60, SECOND);
 //# sourceMappingURL=constants.js.map

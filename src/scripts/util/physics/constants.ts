@@ -12,5 +12,5 @@ import * as Measurable from "./measurable.js";
 
 // /* Rates */
 // export const ONE_PER_SECOND = new Measurable.Rate(1, SECOND);
-export const THIRTY_HERTZ = new Measurable.Rate('none', 'time', 30);
+// export const THIRTY_HERTZ = new Measurable.Rate('none', 'time', 30);
 // export const SIXTY_PER_SECOND = new Measurable.Rate(60, SECOND);

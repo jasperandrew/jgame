@@ -1,52 +1,44 @@
-import { Unit, UnitName } from "./unit.js";
-import { removeNonLanguageCharacters as lang } from "../strings.js";
+import { RateUnit, Unit, NoUnit } from "./unit/unit.js";
 
-export class Quantity {
+export class Quantity<T> {
 
     n: number;
-    type: string;
 
-    constructor(unit: Unit | string, n: Quantity | number = 1) {
-        let x = n instanceof Quantity ? n.n : n;
-        if (unit instanceof Unit) {
-            this.type = unit.type;
-            this.n = (x * unit.factor) + unit.offset;
+    constructor(n: number, unit?: Unit<T>) {
+        if (unit) {
+            this.n = (n * unit.factor) + unit.offset;
         } else {
-            this.type = unit;
-            this.n = x;
+            this.n = n;
         }
-        if (this.n < 0) throw new NegativeQuantityError(this.constructor.name);
+        if (this.n < 0) throw new NegativeQuantityError();
     }
 
-    in = (unit: Unit) => {
-        if (this.type !== unit.type && unit.type !== 'none') throw new InvalidUnitError(this.type, unit);
+    in = (unit: Unit<T>) => {
         return (this.n / unit.factor) - unit.offset;
     }
 
-    print = (unit: Unit, words?: boolean) => {
-        
+    print = (unit: Unit<T>, words?: boolean) => {
+        return '';
     }
 
-    add = (n: Quantity | number) => {
+    add = (n: Quantity<T> | number) => {
         let x;
         if (n instanceof Quantity) {
-            if (this.type !== n.type && n.type !== 'none') throw new InvalidQuantityOperationError(this.type, n.type);
             x = n.n;
         } else {
-            x = n;
+            x = n as number;
         }
 
         this.n += x;
         return this;
     }
 
-    subtract = (n: Quantity | number) => {
+    sub = (n: Quantity<T> | number) => {
         let x;
         if (n instanceof Quantity) {
-            if (this.type !== n.type && n.type !== 'none') throw new InvalidQuantityOperationError(this.type, n.type);
             x = n.n;
         } else {
-            x = n;
+            x = n as number;
         }
 
         this.n = Math.max(0, this.n - x);
@@ -54,63 +46,28 @@ export class Quantity {
     }
 
     scale = (factor: number) => {
-        if (factor < 0) throw new NegativeQuantityError(this.constructor.name);
+        if (factor < 0) throw new NegativeQuantityError();
         this.n *= factor;
         return this;
     }
 }
 
-export class Rate extends Quantity {
+export class Rate<U,V> extends Quantity<U & V>{
 
-    constructor(a: Quantity | string, b: Quantity | string, n: number = 1) {
-        let aType = a instanceof Quantity ? a.type : a;
-        let bType = b instanceof Quantity ? b.type : b;
-        let x = a instanceof Quantity && b instanceof Quantity ? a.n / b.n : n;
-        super(`${lang(aType)}/${lang(bType)}`, x);
+    constructor(n: number, unit?: RateUnit<U,V>) {
+        super(n, new Unit<U & V>());
     }
 
-    get aType() { return this.type.split('/')[0]; }
-    get bType() { return this.type.split('/')[1]; }
-
-    static Unit = (a: Unit, b: Unit) => {
-        return new Unit(
-            `${lang(a.type)}/${lang(b.type)}`,
-            new UnitName(`${a.symbol}/${b.symbol}`, `${a.name.singular}/${b.name.singular}`, `${a.name.plural}/${b.name.singular}`),
-            a.factor / b.factor
-            // todo: offset math?
-        );
-    }
-
-    interval = (unit?: Unit) => {
-        return new Quantity(this.bType, 1 / this.in(Rate.Unit(unit ?? new Unit('none'), Unit.base(this.bType))));
+    interval = (unit?: Unit<U>) => {
+        let factor = unit?.factor ?? 1;
+        let adjustedN = this.in(new RateUnit<U,V>({ factor: factor }));
+        return new Quantity<V>(1 / adjustedN);
     }
 
     inverse = () => {
-        return new Rate(this.bType, this.aType, 1 / this.n);
+        return new Rate<U,V>(1 / this.n);
     }
 }
-
-// export class Rate {
-    
-//     n: number;
-//     timespan: Timespan;
-
-//     constructor(n: number, span: Timespan) {
-//         this.n = n;
-//         this.timespan = span;
-//     }
-
-//     perMs() { return this.n / this.timespan.n; }
-//     perSecond() { return this.perMs() * 1000; }
-//     perMinute() { return this.perSecond() * 60; }
-//     perHour() { return this.perMinute() * 60; }
-//     perDay() { return this.perHour() * 24; }
-//     perWeek() { return this.perDay() * 7; }
-//     perSpan(timespan: Timespan) { return this.perMs() * timespan.n; }
-
-//     inverse(): Rate { return new Rate(this.timespan.n, new Timespan(this.n)); }
-//     interval(): Timespan { return new Timespan(this.timespan.n / this.n); }
-// }
 
 class QuantityError extends Error {
     constructor(message?: string) {
@@ -120,19 +77,7 @@ class QuantityError extends Error {
 }
 
 class NegativeQuantityError extends QuantityError {
-    constructor(name: string) {
-        super(`the concept of negative ${name.toLowerCase()} has not been implemented for this application.`);
-    }
-}
-
-class InvalidQuantityOperationError extends QuantityError {
-    constructor(type1: string, type2: string) {
-        super(`cannot perform counting/conversion operations with quantities of different types (${type1}, ${type2})`);
-    }
-}
-
-class InvalidUnitError extends QuantityError {
-    constructor(type: string, unit: Unit) {
-        super(`cannot express a ${type} in ${unit.name.plural}`);
+    constructor() {
+        super(`the concept of negative quantity has not been implemented for this application.`);
     }
 }
