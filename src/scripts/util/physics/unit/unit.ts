@@ -1,4 +1,4 @@
-import { Quantity, Rate } from "../measurable.js";
+import { Measure, Ratio } from "../measurable.js";
 
 interface UnitDescription {
     symbol?: string;
@@ -30,10 +30,10 @@ export class Unit<T> {
         if(description?.plural) this.plural = description.plural;
     }
 
-    n = (n: number): Quantity<T> => { return new Quantity(n, this); }
+    n = (n: number): Measure<T> => { return new Measure(n, this); }
 }
 
-export class RateUnit<U,V> extends Unit<U & V> {
+export class RatioUnit<U,V> extends Unit<U & V> {
     constructor(description?: UnitDescription) {
         let factor = description?.factor ?? 1;
         if (description?.unit1 && description?.unit2)
@@ -47,7 +47,7 @@ export class RateUnit<U,V> extends Unit<U & V> {
         });
     }
 
-    n = (n: number): Rate<U,V> => { return new Rate(n, this); }
+    n = (n: number): Ratio<U,V> => { return new Ratio(n, this); }
 }
 
 export const NoUnit = new Unit<any>();

@@ -1,4 +1,4 @@
-import { Rate } from "../util/physics/measurable.js";
+import { Ratio } from "../util/physics/measurable.js";
 import { _, time } from "../util/physics/unit/types.js";
 import { MS } from "../util/physics/unit/definitions/time.js";
 import { THIRTY_HERTZ } from "../util/physics/constants.js";
@@ -13,7 +13,7 @@ export class LatencyCompensatedGameLoop {
     logicFn;
     renderFn;
 
-    constructor(logicFn: Function, renderFn: Function, rate: Rate<_,time> = THIRTY_HERTZ) {
+    constructor(logicFn: Function, renderFn: Function, rate: Ratio<_,time> = THIRTY_HERTZ) {
         this.rate = rate;
         this.logicFn = logicFn;
         this.renderFn = renderFn;

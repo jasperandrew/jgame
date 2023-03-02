@@ -1,5 +1,5 @@
-import { RateUnit } from "./unit/unit.js";
-export class Quantity {
+import { RatioUnit } from "./unit/unit.js";
+export class Measure {
     constructor(n, unit) {
         this.in = (unit) => {
             return (this.n / unit.factor) - unit.offset;
@@ -8,13 +8,13 @@ export class Quantity {
             return '';
         };
         this.plus = (n) => {
-            return new Quantity(this.n + n.n);
+            return new Measure(this.n + n.n);
         };
         this.minus = (n) => {
-            return new Quantity(Math.max(0, this.n - n.n));
+            return new Measure(Math.max(0, this.n - n.n));
         };
         this.scale = (factor) => {
-            return new Quantity(this.n * factor);
+            return new Measure(this.n * factor);
         };
         if (unit) {
             this.n = (n * unit.factor) + unit.offset;
@@ -26,17 +26,17 @@ export class Quantity {
             throw new NegativeQuantityError();
     }
 }
-export class Rate extends Quantity {
+export class Ratio extends Measure {
     constructor(n, unit) {
         super(n, unit);
         this.interval = (unit) => {
             var _a;
             let factor = (_a = unit === null || unit === void 0 ? void 0 : unit.factor) !== null && _a !== void 0 ? _a : 1;
-            let adjustedN = this.in(new RateUnit({ factor: factor }));
-            return new Quantity(1 / adjustedN);
+            let adjustedN = this.in(new RatioUnit({ factor: factor }));
+            return new Measure(1 / adjustedN);
         };
         this.inverse = () => {
-            return new Rate(1 / this.n);
+            return new Ratio(1 / this.n);
         };
     }
 }

@@ -1,16 +1,16 @@
 import { q } from "../util/dom.js";
-import { Quantity, Rate } from "../util/physics/measurable.js";
+import { Measure, Ratio } from "../util/physics/measurable.js";
 import { MS, S, MIN, D, H } from "../util/physics/unit/definitions/time.js";
 import { LatencyCompensatedGameLoop } from "./loop.js";
 import { ONE_MYRON } from "../util/physics/constants.js";
 const SPAN = ONE_MYRON.scale(1000);
 export class Game {
     constructor() {
-        this.gameRate = new Rate(MIN.n(1).n / MS.n(1).n); // one game min per real ms
+        this.gameRate = new Ratio(MIN.n(1).n / MS.n(1).n); // one game min per real ms
         this.div = q('div');
         this.gameSpan = SPAN;
         this.realSpan = SPAN.scale(this.gameRate.inverse().n);
-        this.t = new Quantity(0);
+        this.t = new Measure(0);
         this.run = () => {
             this.loop.start();
         };

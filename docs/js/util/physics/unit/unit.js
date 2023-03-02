@@ -1,8 +1,8 @@
-import { Quantity, Rate } from "../measurable.js";
+import { Measure, Ratio } from "../measurable.js";
 export class Unit {
     constructor(description) {
         var _a, _b, _c, _d;
-        this.n = (n) => { return new Quantity(n, this); };
+        this.n = (n) => { return new Measure(n, this); };
         this.symbol = (_a = description === null || description === void 0 ? void 0 : description.symbol) !== null && _a !== void 0 ? _a : '<NO_SYMBOL>';
         this.factor = (_b = description === null || description === void 0 ? void 0 : description.factor) !== null && _b !== void 0 ? _b : 1;
         this.offset = (_c = description === null || description === void 0 ? void 0 : description.offset) !== null && _c !== void 0 ? _c : 0;
@@ -14,7 +14,7 @@ export class Unit {
             this.plural = description.plural;
     }
 }
-export class RateUnit extends Unit {
+export class RatioUnit extends Unit {
     constructor(description) {
         var _a;
         let factor = (_a = description === null || description === void 0 ? void 0 : description.factor) !== null && _a !== void 0 ? _a : 1;
@@ -27,7 +27,7 @@ export class RateUnit extends Unit {
             factor: factor,
             offset: 0 // todo: figure out offset math
         });
-        this.n = (n) => { return new Rate(n, this); };
+        this.n = (n) => { return new Ratio(n, this); };
     }
 }
 export const NoUnit = new Unit();

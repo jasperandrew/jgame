@@ -1,6 +1,6 @@
-import { RateUnit, Unit } from "./unit/unit.js";
+import { RatioUnit, Unit } from "./unit/unit.js";
 
-export class Quantity<T> {
+export class Measure<T> {
 
     n: number;
 
@@ -21,33 +21,33 @@ export class Quantity<T> {
         return '';
     }
 
-    plus = (n: Quantity<T>) => {
-        return new Quantity<T>(this.n + n.n);
+    plus = (n: Measure<T>) => {
+        return new Measure<T>(this.n + n.n);
     }
 
-    minus = (n: Quantity<T>) => {
-        return new Quantity<T>(Math.max(0, this.n - n.n));
+    minus = (n: Measure<T>) => {
+        return new Measure<T>(Math.max(0, this.n - n.n));
     }
 
     scale = (factor: number) => {
-        return new Quantity<T>(this.n * factor);
+        return new Measure<T>(this.n * factor);
     }
 }
 
-export class Rate<U,V> extends Quantity<U & V>{
+export class Ratio<U,V> extends Measure<U & V>{
 
-    constructor(n: number, unit?: RateUnit<U,V>) {
+    constructor(n: number, unit?: RatioUnit<U,V>) {
         super(n, unit);
     }
 
     interval = (unit?: Unit<U>) => {
         let factor = unit?.factor ?? 1;
-        let adjustedN = this.in(new RateUnit<U,V>({ factor: factor }));
-        return new Quantity<V>(1 / adjustedN);
+        let adjustedN = this.in(new RatioUnit<U,V>({ factor: factor }));
+        return new Measure<V>(1 / adjustedN);
     }
 
     inverse = () => {
-        return new Rate<U,V>(1 / this.n);
+        return new Ratio<U,V>(1 / this.n);
     }
 }
 
