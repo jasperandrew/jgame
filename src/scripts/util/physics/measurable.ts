@@ -1,4 +1,4 @@
-import { RateUnit, Unit, NoUnit } from "./unit/unit.js";
+import { RateUnit, Unit } from "./unit/unit.js";
 
 export class Quantity<T> {
 
@@ -21,41 +21,23 @@ export class Quantity<T> {
         return '';
     }
 
-    add = (n: Quantity<T> | number) => {
-        let x;
-        if (n instanceof Quantity) {
-            x = n.n;
-        } else {
-            x = n as number;
-        }
-
-        this.n += x;
-        return this;
+    plus = (n: Quantity<T>) => {
+        return new Quantity<T>(this.n + n.n);
     }
 
-    sub = (n: Quantity<T> | number) => {
-        let x;
-        if (n instanceof Quantity) {
-            x = n.n;
-        } else {
-            x = n as number;
-        }
-
-        this.n = Math.max(0, this.n - x);
-        return this;
+    minus = (n: Quantity<T>) => {
+        return new Quantity<T>(Math.max(0, this.n - n.n));
     }
 
     scale = (factor: number) => {
-        if (factor < 0) throw new NegativeQuantityError();
-        this.n *= factor;
-        return this;
+        return new Quantity<T>(this.n * factor);
     }
 }
 
 export class Rate<U,V> extends Quantity<U & V>{
 
     constructor(n: number, unit?: RateUnit<U,V>) {
-        super(n, new Unit<U & V>());
+        super(n, unit);
     }
 
     interval = (unit?: Unit<U>) => {
@@ -69,15 +51,9 @@ export class Rate<U,V> extends Quantity<U & V>{
     }
 }
 
-class QuantityError extends Error {
-    constructor(message?: string) {
-        super(message);
-        this.name = this.constructor.name;
-    }
-}
-
-class NegativeQuantityError extends QuantityError {
+class NegativeQuantityError extends Error {
     constructor() {
-        super(`the concept of negative quantity has not been implemented for this application.`);
+        super('the concept of negative quantity has not been implemented for this application.');
+        this.name = this.constructor.name;
     }
 }

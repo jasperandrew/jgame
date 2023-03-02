@@ -1,5 +1,4 @@
-import { Time } from "../util/physics/unit/unit.js";
-var MS = Time.MS;
+import { MS } from "../util/physics/unit/definitions/time.js";
 import { THIRTY_HERTZ } from "../util/physics/constants.js";
 export class LatencyCompensatedGameLoop {
     constructor(logicFn, renderFn, rate = THIRTY_HERTZ) {

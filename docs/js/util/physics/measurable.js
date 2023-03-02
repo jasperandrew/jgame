@@ -1,4 +1,4 @@
-import { RateUnit, Unit } from "./unit/unit.js";
+import { RateUnit } from "./unit/unit.js";
 export class Quantity {
     constructor(n, unit) {
         this.in = (unit) => {
@@ -7,33 +7,14 @@ export class Quantity {
         this.print = (unit, words) => {
             return '';
         };
-        this.add = (n) => {
-            let x;
-            if (n instanceof Quantity) {
-                x = n.n;
-            }
-            else {
-                x = n;
-            }
-            this.n += x;
-            return this;
+        this.plus = (n) => {
+            return new Quantity(this.n + n.n);
         };
-        this.sub = (n) => {
-            let x;
-            if (n instanceof Quantity) {
-                x = n.n;
-            }
-            else {
-                x = n;
-            }
-            this.n = Math.max(0, this.n - x);
-            return this;
+        this.minus = (n) => {
+            return new Quantity(Math.max(0, this.n - n.n));
         };
         this.scale = (factor) => {
-            if (factor < 0)
-                throw new NegativeQuantityError();
-            this.n *= factor;
-            return this;
+            return new Quantity(this.n * factor);
         };
         if (unit) {
             this.n = (n * unit.factor) + unit.offset;
@@ -47,7 +28,7 @@ export class Quantity {
 }
 export class Rate extends Quantity {
     constructor(n, unit) {
-        super(n, new Unit());
+        super(n, unit);
         this.interval = (unit) => {
             var _a;
             let factor = (_a = unit === null || unit === void 0 ? void 0 : unit.factor) !== null && _a !== void 0 ? _a : 1;
@@ -59,15 +40,10 @@ export class Rate extends Quantity {
         };
     }
 }
-class QuantityError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = this.constructor.name;
-    }
-}
-class NegativeQuantityError extends QuantityError {
+class NegativeQuantityError extends Error {
     constructor() {
-        super(`the concept of negative quantity has not been implemented for this application.`);
+        super('the concept of negative quantity has not been implemented for this application.');
+        this.name = this.constructor.name;
     }
 }
 //# sourceMappingURL=measurable.js.map
