@@ -4,8 +4,10 @@ export class Measure {
         this.in = (unit) => {
             return (this.n / unit.factor) - unit.offset;
         };
-        this.print = (unit, words) => {
-            return '';
+        this.print = (unit, precision = 4, words = false) => {
+            let num = this.in(unit);
+            let name = words ? (num === 1 ? unit.singular : unit.plural) : unit.symbol;
+            return num.toPrecision(precision) + ' ' + name;
         };
         this.plus = (n) => {
             return new Measure(this.n + n.n);

@@ -24,3 +24,5 @@ test('Constant.THIRTY_HERTZ.in(Time.HZ)', Constant.THIRTY_HERTZ.in(Time.HZ), 30)
 test('new Quantity(31, Time.HZ).sub(1).n', new Measure(31, Time.HZ).minus(Constant.ONE_HERTZ).n, Constant.THIRTY_HERTZ.n);
 test('Constant.THIRTY_HERTZ.interval().in(Time.MS)', Constant.THIRTY_HERTZ.interval().in(Time.MS), 1000/30);
 test('M_SOLAR.n(1).in(KG)', M_SOLAR.n(10).in(KG), 1.98847 * Math.pow(10, 31));
+
+console.log(M_SOLAR.n(10).print(KG, 4, true));

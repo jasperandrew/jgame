@@ -17,8 +17,10 @@ export class Measure<T> {
         return (this.n / unit.factor) - unit.offset;
     }
 
-    print = (unit: Unit<T>, words?: boolean) => {
-        return '';
+    print = (unit: Unit<T>, precision: number = 4, words: boolean = false) => {
+        let num = this.in(unit);
+        let name = words ? (num === 1 ? unit.singular : unit.plural) : unit.symbol;
+        return num.toPrecision(precision) + ' ' + name;
     }
 
     plus = (n: Measure<T>) => {
